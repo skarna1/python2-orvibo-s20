@@ -1,3 +1,4 @@
+#!/bin/env python
 from orvibo.s20 import S20
 import argparse
 import logging
@@ -51,7 +52,7 @@ def parseargs():
     return args
 
 def socket_factory():
-    sockets = [('tv', "192.168.10.41", "ac:cf:23:83:73:28")]
+    sockets = [('tv', "192.168.10.41", "ac:cf:23:83:73:28"), ('pc', "192.168.10.47", "ac:cf:23:82:d9:ae")]
     return Pistorasia(sockets)
 
 def main():

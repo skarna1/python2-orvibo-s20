@@ -84,7 +84,7 @@ def discover(timeout=DISCOVERY_TIMEOUT):
                     entry['mac'] = data[7:13]
                     entry['imac'] = data[19:25]
                     entry['next'] = 0
-                    entry['st'] = int(data[-1])
+                    entry['st'] = int(binascii.hexlify(data[-1]))
                     entry['time'] = _device_time(data[37:41])
                     entry['serverTime'] = int(time.time())
                     hosts[host] = entry
@@ -181,7 +181,6 @@ class S20(object):
         resp = self._udp_transact(cmd, self._discovery_resp,
                                   broadcast=True,
                                   timeout=DISCOVERY_TIMEOUT)
-        print (resp)
         if resp:
             (mac, mac_reversed) = resp
 

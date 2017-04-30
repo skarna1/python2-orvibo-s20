@@ -1,7 +1,8 @@
 #!/bin/env python
-from orvibo.s20 import S20
+from orvibo.s20 import S20, discover
 import argparse
 import logging
+import binascii
 
 
 #logging.basicConfig(level=logging.DEBUG)
@@ -52,8 +53,17 @@ def parseargs():
     return args
 
 def socket_factory():
-    sockets = [('tv', "192.168.10.41", "ac:cf:23:83:73:28"), ('pc', "192.168.10.47", "ac:cf:23:82:d9:ae")]
+    sockets = []
+    socket_names = {"ac:cf:23:83:73:28": 'tv', "ac:cf:23:82:d9:ae": 'pc'}
+    hosts = discover()
+    for host in hosts:
+        mac = add_colons(binascii.hexlify(hosts[host]['mac']))
+        if mac in socket_names:
+            sockets.append((socket_names[mac], host, mac))
     return Pistorasia(sockets)
+
+def add_colons(mac):
+    return ':'.join(s.encode('hex') for s in mac.decode('hex'))
 
 def main():
     args = parseargs()
